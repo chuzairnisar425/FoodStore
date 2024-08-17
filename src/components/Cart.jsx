@@ -12,8 +12,8 @@ function Cart() {
           />
         </div>
         <div className="absolute bottom-0 mb-20">
-          <h3>Items :</h3>
-          <h3>Total Amount :</h3>
+          <h3 className="font-semibold text-gray-800">Items :</h3>
+          <h3 className="font-semibold text-gray-800">Total Amount :</h3>
           <hr />
           <button className="bg-green-500 font-bold px-3 text-white py-2 rounded-lg border-none w-full">
             CheckOut
