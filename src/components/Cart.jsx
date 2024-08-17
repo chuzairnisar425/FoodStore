@@ -11,7 +11,7 @@ function Cart() {
   const totalQty = cartItems.reduce((totalQty, item) => totalQty + item.qty, 0);
 
   const totalPrice = cartItems.reduce(
-    (totalPrice, item) => totalPrice + item.qty * item.price
+    (totalPrice, item) => totalPrice + item.qty * item.price,0
   );
   return (
     <>
@@ -22,7 +22,7 @@ function Cart() {
       >
         <div className="flex justify-between items-center my-3">
           <span className="text-xl - font-bold text-gray-800">My Order</span>
-          <IoMdClose
+          <IoMdClose 
             onClick={() => setActiveCart(!activeCart)}
             className="border-2 outline cursor-pointer border-gray-600 text-gray-600 font-bold p-1
           hover:text-red-300 hover:border-red-300 text-xl rounded-md "
