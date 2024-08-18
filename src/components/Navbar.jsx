@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className="flex flex-col lg:flex-row justify-between mx-6 py-3 mb-3">
       <div className="">
         <h3 className="text-xl font-bold text-gray-600">{new Date().toUTCString().slice(0, 16)}</h3>
-        <h1 className="text-2xl font-bold">Mian Foods</h1>
+        <h1 className="text-2xl font-bold">The <span className="text-green-500 font-semibold"> Chillis</span></h1>
       </div>
       <div>
         <input
