@@ -24,7 +24,7 @@ Welcome to the **Food Ordering App**! This project is a modern, fully responsive
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/food-ordering-app.git
+   git clone https://github.com/chuzairnisar425/FoodStore.git
    cd food-ordering-app
    ```
 
