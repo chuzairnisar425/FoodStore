@@ -3,7 +3,7 @@ import Home from "./pages/Home"
 import Success from "./pages/Success"
 import Error from "./pages/Error"
 
-
+import ProtectedRoute from "./components/ProtectedRoute"
 function App() {
 
 
@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/success" element={<Success />} />
+          <Route path="/success"  element={<ProtectedRoute element={<Success/>}/>}/>
           <Route path="/*" element={<Error />} />
         </Routes>
       </BrowserRouter>
