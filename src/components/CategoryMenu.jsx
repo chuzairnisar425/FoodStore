@@ -21,13 +21,13 @@ function CategoryMenu() {
     <div className="ml-6">
       <h3 className="font-semibold">Find the best food</h3>
       <div className="my-5 flex gap-3 overflow-x-scroll scroll-smooth lg:overflow-x-hidden md:overflow-x-hidden">
-      <button 
-            onClick={() => dispatch(setCategory('All'))} className={`px-3 py-2 bg-gray-200 font-bold rounded-lg hover:bg-green-500 $ `}>
-           All
-          </button>
+        <button
+          onClick={() => dispatch(setCategory('All'))} className={`px-3 py-2 bg-gray-200 font-bold border-none cursor-pointer rounded-lg hover:bg-green-500 ${selectedCategory === 'All' && 'bg-green-500 text-white duration-300'} `}>
+          All
+        </button>
         {categories.map((category, index) => {
           return (<button key={index}
-            onClick={() => dispatch(setCategory(category))} className={`px-3 py-2 bg-gray-200 font-bold rounded-lg hover:bg-green-500`}>
+            onClick={() => dispatch(setCategory(category))} className={`px-3 py-2 bg-gray-200 font-bold cursor-pointer border-none rounded-lg hover:bg-green-500 ${selectedCategory === category && 'bg-green-500 duration-300 text-white'}`}>
             {category}
           </button>
           )
