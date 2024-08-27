@@ -2,6 +2,7 @@ import { User } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Corrected the import
 
+
 // Signup route
 export const signup = async (req, res) => {
     const { email, password, name } = req.body;
@@ -123,7 +124,12 @@ export const resetPassword = async (req, res) => {
     try {
         const generateOtp = Math.floor(Math.random() * 10000)// generate 4 digit number
         let user = User.findOne({ email })
-
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please Signup'
+            })
+        }
     } catch (error) {
         return res.status(500).json({
             success: false,
