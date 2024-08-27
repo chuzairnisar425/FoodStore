@@ -1,7 +1,8 @@
-import { User } from "../models/User";
+import { User } from '../models/User.js';
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Corrected the import
-
+import nodemailer from 'nodemailer'
 
 // Signup route
 export const signup = async (req, res) => {
@@ -130,6 +131,63 @@ export const resetPassword = async (req, res) => {
                 message: 'Please Signup'
             })
         }
+        var transporter = nodemailer.createTransport({
+            host: "sandbox.smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+                user: "bc32b7ef12bf32",
+                pass: "5883c65a5e19a3"
+            }
+        });
+
+        const info = await transporter.sendMail({
+            from: 'uzair.nisar425@gmail.com', // sender address
+            to: email, // list of receivers
+            subject: "New Otp has been generated ✔", // Subject line
+
+            html: `<h3>Your generated is: <i>${generateOtp}</i></h3>`, // html body
+        });
+        if (info.messageId) {
+            await User.findOneAndUpdate({
+                email
+                ,
+                $set: {
+                    otp: generateOtp,
+                }
+            })
+            return res.status(200).json({
+                success: true,
+                message: 'Otp has been sent to your email'
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+}
+
+export const verifyOtp = async (req, res) => {
+    const { otp, newPassword } = req.body;
+    try {
+        const securePassword = await bcrypt.hash(newPassword, 10);
+        let user = await User.findOneAndUpdate({ otp }, {
+            $set: {
+                password: securePassword,
+                otp: 0,
+            }
+        })
+        if (!user) {
+            return res.status(200).json({
+                success: true,
+                message: 'Invalid Otp',
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'Password Updated',
+        })
     } catch (error) {
         return res.status(500).json({
             success: false,
