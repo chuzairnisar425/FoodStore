@@ -88,7 +88,7 @@ export const logout = async => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            messgae: error.message,
+            message: error.message,
         })
 
     }
