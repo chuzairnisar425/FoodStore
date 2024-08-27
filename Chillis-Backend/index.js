@@ -1,18 +1,25 @@
 import express from 'express';
-import cors from 'cors';  // Corrected whitespace issue
+import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { connectDb } from './connection.js';
+import { router } from './routes.js';
+// Load environment variables from .env file
+dotenv.config(); // dotenv.config() should be called before using any environment variables
 
-
-dotenv.config();  // dotenv.config() should be called before using any environment variables
+// Connect to the database
 connectDb();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
+// Middleware setup
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse incoming JSON requests
+app.use(cookieParser()); // Parse cookies
 
+// Route setup
+app.use('/api', router); // Use routes from the routes module
+
+// Start the server
 app.listen(port, () => console.log(`Server is running on port ${port}`));
