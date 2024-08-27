@@ -80,3 +80,16 @@ export const login = async (req, res) => {
         });
     }
 }
+
+// logout routes 
+export const logout = async => {
+    try {
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            messgae: error.message,
+        })
+
+    }
+}
