@@ -1,6 +1,11 @@
 import { Food } from "../models/Food";
 import { User } from "../models/User";
 
+
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_KEY)
+
 // Add to cart route
 
 export const addToCart = async (req, res) => {
@@ -217,3 +222,19 @@ export const decrementQuantity = async (req, res) => {
 };
 
 
+// checkout route 
+
+
+export const checkOut = async (req, res) => {
+    const userId = req.id;
+
+    try {
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            meesage: error.message
+        })
+    }
+
+}
