@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSearch } from "../redux/slices/SearchSlice";
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { MdClose } from 'react-icons/md'
+import Navlist from "./Navlist";
 const Navbar = () => {
   const [toggleNav, setToggleNav] = useState(false)
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.user)
+
+
+
   return (
     <nav className="flex flex-col lg:flex-row justify-between mx-6 py-3 mb-3">
       <div className="">
@@ -25,9 +30,11 @@ const Navbar = () => {
       </div>
       <GiHamburgerMenu className={`absolute top-5 right-5 lg:right-8 lg:top-6 text-xl text-gray-600 cursor-pointer ${toggleNav && 'hidden'
         } transition-all duration-500 ease-in-out
-      `} onClick={() => setToggleNav(true)} /><MdClose className={`absolute top-5 right-5 lg:right-8 lg:top-6 text-xl text-gray-600 cursor-pointer ${!toggleNav && 'hidden'
-        } transition-all duration-500 ease-in-out
-      `} onClick={() => setToggleNav(false)} />
+      `} onClick={() => setToggleNav(true)} /> <MdClose
+        className={`absolute top-5 right-5 lg:right-8 lg:top-6 text-xl text-gray-600 cursor-pointer transition-all duration-500 ease-in-out ${!toggleNav && 'hidden'}`}
+        onClick={() => setToggleNav(false)}
+      />
+      <Navlist toggleNav={toggleNav} setToggleNav={setToggleNav} auth={auth} />
     </nav>
   );
 };
