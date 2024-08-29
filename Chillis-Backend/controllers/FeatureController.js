@@ -1,10 +1,9 @@
-import { Food } from "../models/Food";
-import { User } from "../models/User";
+import { Food } from "../models/Food.js";
+import { User } from "../models/User.js";
 
+import Stripe from "stripe";
 
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_KEY)
+const stripe = new Stripe(process.env.STRIPE_KEY);
 
 // Add to cart route
 
@@ -192,7 +191,7 @@ export const decrementQuantity = async (req, res) => {
                         $subtract: ["$quantity", 1],
                     },
                     totalPrice: {
-                        $subtract: ["$totalPrice", "$price"]
+                        $subtract: ["$totalPrice", "$price"],
                     },
                 },
             },
@@ -221,20 +220,69 @@ export const decrementQuantity = async (req, res) => {
     }
 };
 
-
-// checkout route 
-
+// checkout route
 
 export const checkOut = async (req, res) => {
     const userId = req.id;
 
     try {
+        const cartItems = await Food.find({ userId });
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment",
+            line_items: cartItems.map((item) => {
+                return {
+                    price_data: {
+                        currency: "pkr",
+                        product_data: {
+                            name: item.name,
+                            image: [item.image],
+                        },
+                        unit_amount: item.price * 100,
+                    },
+                    quantity: item.quantity,
+                };
+            }),
+            success_url: "http://localhost:5173/success",
+            cancel_url: "http://localhost:5173/",
+        });
+        res.join({ url: session_url });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            meesage: error.message,
+        });
+    }
+};
+
+// clear cart route 
+export const clearCart = async (req, res) => {
+    const userId = req.id;
+    try {
+        const deletedItems = await Food.deleteMany({ userId });
+        const deletedList = await User.findOneAndUpdate({
+            _id: userId
+        },
+            {
+                cartItems: [],
+            }
+        );
+        if (!deletedItems) {
+            return res.status(400).json({
+                success: false,
+                message: 'Failed to clear cart'
+            })
+
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'Order Confirmed'
+        })
 
     } catch (error) {
         return res.status(500).json({
             success: false,
-            meesage: error.message
+            message: error.message
         })
     }
-
 }
