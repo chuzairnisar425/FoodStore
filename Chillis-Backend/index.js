@@ -11,7 +11,7 @@ dotenv.config(); // dotenv.config() should be called before using any environmen
 connectDb();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 // Middleware setup
 app.use(cors(
