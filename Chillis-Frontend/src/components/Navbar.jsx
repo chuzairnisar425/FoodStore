@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearch } from "../redux/slices/SearchSlice";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import Navlist from "./Navlist";
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+
+
+import { loginUser, setUser } from '../redux/slices/AuthSlice'
+
 const Navbar = () => {
   const [toggleNav, setToggleNav] = useState(false);
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth.user);
+  const auth = useSelector((state) => state.auth.isAuth);
+  const user = useSelector((state) => state.auth.user);
+
+  const getUser = async () => {
+    const res = await axios.get('http://localhost:5000/api/get-user', {
+      withCredentials: true,
+    })
+    const data = await res.data;
+    dispatch(setUser(data.user))
+    dispatch(loginUser(data.isAuth))
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   return (
     <nav className="flex flex-col lg:flex-row justify-between mx-6 py-3 mb-3">
