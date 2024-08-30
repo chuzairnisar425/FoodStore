@@ -9,28 +9,26 @@ export const signup = async (req, res) => {
     const { email, password, name } = req.body;
     try {
         let user = await User.findOne({ email });
+
         if (user) {
-            return res.status(400).json({
-                success: false,
-                message: "Please Login",
-            });
+            return res.staus(400).json({ success: false, message: "Please Login" });
         }
+
         const securePassword = await bcrypt.hash(password, 10);
+
         user = await User.create({
             name,
             email,
             password: securePassword,
         });
 
-        res.status(200).json({
-            success: true,
-            message: 'Signup Successful',
-        });
+        await user.save();
+
+        return res
+            .status(201)
+            .json({ success: true, message: "Signup Successful" });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
+        return res.stauts(500).json({ success: false, message: error.message });
     }
 };
 
