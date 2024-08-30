@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
         let user = await User.findOne({ email });
 
         if (user) {
-            return res.staus(400).json({ success: false, message: "Please Login" });
+            return res.status(400).json({ success: false, message: "Please Login" });
         }
 
         const securePassword = await bcrypt.hash(password, 10);
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
             .status(201)
             .json({ success: true, message: "Signup Successful" });
     } catch (error) {
-        return res.stauts(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
