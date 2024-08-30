@@ -12,29 +12,19 @@ function Signup() {
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        const res = await axios.post(
+            'http://localhost:5000/api/signup',
+            {
+                name, email, password,
+            }, { withCredentials: true, }
 
-        try {
-            const res = await axios.post(`http://localhost:5000/api/signup`, {
-                email,
-                name,
-                password,
-            });
-
-            const data = res.data;
-
-            if (res.status === 200) {
-                toast.success(data.message);
-                navigate('/login');
-            }
-        } catch (error) {
-            if (error.response && (error.response.status === 400 || error.response.status === 500)) {
-                toast.error(error.response.data.message);
-            } else {
-                toast.error('An unexpected error occurred. Please try again.');
-            }
+        )
+        const data = await res.data
+        if (data.success) {
+            toast.success(data.message);
+            navigate('/login')
         }
-    };
-
+    }
     return (
         <div className="flex justify-center items-center h-screen">
             <form
